@@ -16,14 +16,12 @@ function generateSalt(length = 16): string {
  * @param password - The password to be hashed.
  * @returns An array where the first element is the salt and the second element is the hashed password.
  */
-export function hashPassword(password: string): string[] {
-    // generate salt using pbkdf2Sync
-    const salt = generateSalt(); // generate a random salt
+function hashPassword(password: string, salt: string): string {
     const iterations = 1000; // number of iterations
     const hash = crypto
         .pbkdf2Sync(password, salt, iterations, 64, "sha256")
         .toString("hex");
-    return [salt, hash];
+    return hash;
 }
 
 /**
@@ -44,3 +42,5 @@ function verifyPassword(
         .toString("hex");
     return inputHash === storedHash;
 }
+
+export { generateSalt, verifyPassword, hashPassword };
